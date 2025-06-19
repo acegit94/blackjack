@@ -1,5 +1,9 @@
 import logging
+from deck import Deck
+from hand import Hand
+from chips import Chips
 
+###Loger configurations###
 logging.basicConfig(
     level = logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -8,10 +12,8 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-from deck import Deck
-from hand import Hand
-from chips import Chips
 
+###Object instances###
 human_deck = Deck()
 human_hand = Hand()
 human_chips = Chips()
@@ -40,10 +42,30 @@ def hit(deck: Deck, hand: Hand):
     card = deck.deal()
     hand.add_card(card)
 
+def hit_or_stay() -> str:
+    while True:
+        player_choice = input("Would you like to hit or stay\n")
+        if player_choice.lower() == "hit":
+            return "hit"
+        elif player_choice.lower() == "stay":
+            return "stay"
+        else:
+            print("Please enter valid input")
 
-hit(human_deck, human_hand)
-hit(human_deck, human_hand)
-hit(human_deck, human_hand)
-human_hand.print_hand()
-print(human_hand.get_score())
 
+def check_player_score() -> bool:
+    if human_hand.get_score() > 21:
+        return False
+    return True
+
+def game_logic():
+
+    player_turn:bool = True
+    bet_amount:int = take_bet()
+
+    while player_turn:
+        if hit_or_stay() == "hit":
+            hit(human_deck, human_hand)
+
+        else:
+            player_turn = False
