@@ -24,3 +24,6 @@ class Hand:
     def print_hand(self):
         for card in self.__hand_of_cards:
             print(card)
+
+    def show_one_card(self):
+        print(self.__hand_of_cards[0])
