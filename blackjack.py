@@ -72,8 +72,8 @@ def continue_playing(player_chips: Chips) -> bool:
                 print(f"Sorry! Not enough balance. Remaining chips: {player_chips.total}")
                 return False
             return True
-        if player_choice.lower() == "non":
-            return  False
+        if player_choice.lower() == "no":
+            return False
 
         print("Please enter yes or no")
 
@@ -83,19 +83,18 @@ def game_logic():
 
     while game_is_on:
         ###Object instances###
-        player_deck = Deck()
+        deck = Deck()
         player_hand = Hand()
-        dealer_deck = Deck()
         dealer_hand = Hand()
 
         player_turn: bool = True
         bet_amount: int = take_bet(player_chips)
         dealer_turn: bool = True
 
-        hit(player_deck, player_hand)
-        hit(player_deck, player_hand)
-        hit(dealer_deck, dealer_hand)
-        hit(dealer_deck, dealer_hand)
+        hit(deck, player_hand)
+        hit(deck, player_hand)
+        hit(deck, dealer_hand)
+        hit(deck, dealer_hand)
 
         print("Player hand")
         print(player_hand.print_hand())
@@ -105,7 +104,7 @@ def game_logic():
 
         while player_turn:
             if hit_or_stay() == "hit":
-                hit(player_deck, player_hand)
+                hit(deck, player_hand)
                 if check_player_score(player_hand) == "bust":
                     player_turn = False
                     print(f"Dealer wins! Remaining balance: {player_chips.total}")
@@ -115,7 +114,7 @@ def game_logic():
 
 
         while dealer_turn:
-            hit(dealer_deck, dealer_hand)
+            hit(deck, dealer_hand)
             if check_dealer_score(dealer_hand) == "bust":
                 dealer_turn = False
                 player_chips.win_bet(bet_amount * 2)
