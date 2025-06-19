@@ -1,34 +1,49 @@
+import logging
+
+logging.basicConfig(
+    level = logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[logging.FileHandler("game.log"), logging.StreamHandler()]
+)
+
+logger = logging.getLogger(__name__)
+
 from deck import Deck
-from human import Human
-from computer import Computer
+from hand import Hand
+from chips import Chips
 
-deck = Deck()
-deck.create_deck()
+human_deck = Deck()
+human_hand = Hand()
+human_chips = Chips()
 
-human = Human("Anshul", 5000.00)
-human.hit(deck.deal())
-human.hit(deck.deal())
-human.show_hand()
-print()
-
-
-def validate_bet(bet_amount: str):
-    if not bet_amount.isdigit():
-        while not bet_amount.isdigit():
-            bet_amount = input("Please enter a valid amount \n")
-    while not human.bet(float(bet_amount)):
-        print(f"Remaining amount {human.get_amount()}")
-        bet_amount = input("Please enter different amount \n")
-
-    print(human.get_amount())
+computer_deck = Deck()
+computer_hand = Hand()
 
 
 
-def game_logic():
-    playing = True
-    human_turn = True
-    validate_bet(input("Please enter bet amount \n"))
+
+def take_bet():
+    while True:
+        try:
+            bet_amount = int(input(f"Please enter your bet amount (Available: {human_chips.total}) "))
+            if bet_amount <= human_chips.total:
+                human_chips.total -= bet_amount
+            else:
+                print(f"Invalid bet. You have {human_chips.total} chips")
+                continue
+            return bet_amount
+        except ValueError as error:
+            logger.error(error)
+            print("Invalid input! Please enter a number")
+
+def hit(deck: Deck, hand: Hand):
+    card = deck.deal()
+    hand.add_card(card)
 
 
-game_logic()
+hit(human_deck, human_hand)
+hit(human_deck, human_hand)
+hit(human_deck, human_hand)
+human_hand.print_hand()
+print(human_hand.get_score())
 
