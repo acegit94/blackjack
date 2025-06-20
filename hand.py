@@ -22,8 +22,11 @@ class Hand:
         return self.__score
 
     def print_hand(self):
-        for card in self.__hand_of_cards:
-            print(card)
+        for index, card in enumerate(self.__hand_of_cards):
+            if index < len(self.__hand_of_cards)-1:
+                print(card, end =" , ")
+            else:
+                print(card)
 
     def show_one_card(self):
         print(self.__hand_of_cards[0])
